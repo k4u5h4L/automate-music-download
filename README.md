@@ -24,7 +24,7 @@ npm install
 -   Now run the script
 
 ```
-npm sun start
+npm run start
 ```
 
 This will start chromium and navigate to sites.
