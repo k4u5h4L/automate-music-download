@@ -2,6 +2,7 @@
 
 const puppeteer = require("puppeteer");
 const inputValidate = require(__dirname + "/inputFilter");
+const cheerio = require("cheerio");
 
 function delay(time) {
     return new Promise(function (resolve) {
@@ -22,6 +23,22 @@ async function justClick() {
     let search = inputValidate.validate("sunrise rubika");
 
     await page.goto("https://free-mp3-download.net/?q=" + search);
+
+    const html = await page.content();
+
+    const $ = cheerio.load(html);
+
+    const htmlBody = $("#results_t").children().children().next().next().html();
+
+    const songID = htmlBody.split(`"`);
+
+    const songUrl = "https://free-mp3-download.net/" + songID[1];
+
+    // console.log(songUrl);
+
+    await page.goto(songUrl);
+
+    await delay(6000);
 
     // await page.type(".input", "inside jagsy");
 
@@ -82,7 +99,7 @@ async function justClick() {
     //   selector
     // );
 
-    //await browser.close();
+    await browser.close();
 }
 
 justClick();

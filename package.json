@@ -2,7 +2,7 @@
     "name": "automate-music-download",
     "version": "1.0.0",
     "description": "A headless chrome script to automate music download of lossless audio.",
-    "main": "app.js",
+    "main": "song.js",
     "scripts": {
         "start": "node .",
         "devStart": "nodemon ."

@@ -38,3 +38,6 @@ This will start chromium and navigate to sites.
 
 -   Since this script uses chromium, RAM usage may be high, i.e. it will open as many tabs as the song you want to download. <br>
     If you don't want the script to crash or hang, please feed in less songs each time. This will be patched in the future.
+
+-   When you use the script for the first time, it will ask for a recaptcha verification, so headless mode is turned off for
+    the user to complete the verification and then move on with the download.
