@@ -38,68 +38,23 @@ async function justClick() {
 
     await page.goto(songUrl);
 
-    await delay(6000);
+    await page.evaluate(() => {
+        let test = document.querySelector('input[id="flac"]');
+        test.click();
+    });
 
-    // await page.type(".input", "inside jagsy");
+    const html2 = await page.content();
+    const $2 = cheerio.load(html2);
+    const iframeElement = $2("iframe");
+    console.log(iframeElement.html());
 
-    // await page.click("#snd");
+    await delay(15000);
 
-    // now wait for it to load
+    await page.click(".dl.btn.waves-effect.waves-light.blue.darken-4");
 
-    // await delay(5000);
+    console.log("download button clicked ");
 
-    /*
-  await page.mouse.move(0, 0);
-  await page.mouse.down();
-  */
-
-    // await page.keyboard.press("Tab");
-
-    // await page.keyboard.press("Enter");
-
-    /*
-  let selector = 'input[id="flac"]';
-
-  await page.evaluate(
-    (selector) => document.querySelector(selector).click(),
-    selector
-  );
-  */
-
-    // await page.evaluate(() => {
-    //     var test = document.querySelector('#flac > div:nth-child(2) > input[type="radio"]');
-    //     test.click();
-    // });
-
-    /*
-    const html = await page[i].content();
-
-    const $ = cheerio.load(html);
-
-    const pageSource = $("html");
-
-    console.log(pageSource.html());
-    */
-
-    /*
-    for (let i1 = 0; i1 < 4; i1++) {
-      await page[i].keyboard.press("Tab");
-    }
-
-    await page[i].keyboard.press("Enter");
-
-    */
-
-    //let selector = ".btn.waves-effect.waves-light.blue.darken-4";
-
-    // await page[i].click(".btn.waves-effect.waves-light.blue.darken-4");
-
-    // await page[i].evaluate(
-    //   (selector) => document.querySelector(selector).click(),
-    //   selector
-    // );
-
-    await browser.close();
+    // await browser.close();
 }
 
 justClick();

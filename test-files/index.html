@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testing clicks with puppeteer</title>
+  </head>
+  <body>
+    <h1>Testing clicks with puppeteer</h1>
+    <form>
+      <input type="text" id="input1" /><br /><br />
+      <input type="text" id="input2" /><br /><br />
+      <button type="button" id="thatButton">Submit</button>
+    </form>
+    <script>
+      let thatBtn = document.getElementById("thatButton");
+      thatBtn.onclick = () => {
+        alert("the form has been submitted.");
+      };
+    </script>
+  </body>
+</html>
