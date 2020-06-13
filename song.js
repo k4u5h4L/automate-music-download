@@ -2,7 +2,11 @@
 
 const puppeteer = require("puppeteer");
 const inputValidate = require(__dirname + "/inputFilter");
+// const getSongs = require(__dirname + "/getSongs");
 const cheerio = require("cheerio");
+const fs = require("fs");
+
+let songs = [];
 
 /*
 function delay(time) {
@@ -12,15 +16,13 @@ function delay(time) {
 }
 */
 
-let waitTime = 0;
-
 async function autoScroll(page) {
     await page.evaluate(async () => {
         await new Promise((resolve, reject) => {
-            var totalHeight = 0;
-            var distance = 100;
-            var timer = setInterval(() => {
-                var scrollHeight = document.body.scrollHeight;
+            let totalHeight = 0;
+            let distance = 100;
+            let timer = setInterval(() => {
+                let scrollHeight = document.body.scrollHeight;
                 window.scrollBy(0, distance);
                 totalHeight += distance;
 
@@ -33,11 +35,22 @@ async function autoScroll(page) {
     });
 }
 
-function doThis() {
+fs.readFile("inputSongs/songs.txt", "utf8", (err, data) => {
+    if (err) throw err;
+    sendText(data);
+});
+
+const sendText = (data) => {
+    songs = data.split("\r\n");
+
+    // console.log(`In module: ${songs}`);
+};
+
+function waitTimerFun() {
     if (10 < 20) {
-        waitTime = 5000;
+        return 5000;
     } else {
-        waitTime = 10000;
+        return 10000;
     }
 }
 
@@ -47,57 +60,67 @@ async function justClick() {
         slowMo: 250, // slow down by 250ms, for debugging
     });
 
-    const page = await browser.newPage(); // make an array of pages/tabs
+    let page = [];
+    let search = [];
+    let html = [];
+    let $ = [];
+    let htmlBody = [];
+    let songID = [];
+    let songUrl = [];
+    let waitTime = [];
 
-    await page.setViewport({ width: 1280, height: 800 });
+    for (let i in songs) {
+        page[i] = await browser.newPage(); // make an array of pages/tabs
 
-    let search = inputValidate.validate("sunrise rubika");
+        await page[i].setViewport({ width: 1280, height: 800 });
 
-    await page.goto("https://free-mp3-download.net/?q=" + search);
+        // inital setup
 
-    const html = await page.content();
+        // console.log(songs);
 
-    const $ = cheerio.load(html);
+        search[i] = inputValidate.validate(songs[i]);
 
-    const htmlBody = $("#results_t").children().children().next().next().html();
+        await page[i].goto("https://free-mp3-download.net/?q=" + search);
 
-    const songID = htmlBody.split(`"`);
+        html[i] = await page[i].content();
 
-    const songUrl = "https://free-mp3-download.net/" + songID[1];
+        $[i] = cheerio.load(html[i]);
 
-    // console.log(songUrl);
+        htmlBody[i] = $[i]("#results_t").children().children().next().next().html();
 
-    await page.goto(songUrl);
+        songID[i] = htmlBody[i].split(`"`);
 
-    await autoScroll(page);
+        songUrl[i] = "https://free-mp3-download.net/" + songID[i][1];
 
-    await page.evaluate(() => {
-        let test = document.querySelector('input[id="flac"]');
-        test.click();
-    });
+        // console.log(songUrl[i]);
 
-    // await page.waitFor(15000);
+        await page[i].goto(songUrl[i]);
 
-    /*
-    const html2 = await page.content();
-    const $2 = cheerio.load(html2);
-    const iframeElement = $2("main");
-    console.log(iframeElement.html());
-    */
+        await autoScroll(page[i]);
 
-    // if (i === 0) {
-    // await page.waitFor(5000); // if it is the first time, then wait for some time to solve the recaptcha for the user
-    // }
+        await page[i].evaluate(() => {
+            let test = document.querySelector('input[id="flac"]');
+            test.click();
+        });
 
-    await page.evaluate(() => {
-        let test = document.querySelector(".dl.btn.waves-effect.waves-light.blue.darken-4");
-        test.click();
-        console.log("download button clicked");
-    });
+        if (i === 0) {
+            let howLong = 0;
+            await page[i].evaluate(() => {
+                howLong = parseInt(prompt("How long will you take to solve the capcha?"));
+            });
+            await page[i].waitFor(howLong); // if it is the first time, then wait for some time for the user to solve the recaptcha
+        }
 
-    doThis();
+        await page[i].evaluate(() => {
+            let test = document.querySelector(".dl.btn.waves-effect.waves-light.blue.darken-4");
+            test.click();
+            console.log("download button clicked");
+        });
 
-    await page.waitFor(waitTime);
+        waitTime[i] = waitTimerFun();
+
+        await page[i].waitFor(waitTime[i]);
+    }
 
     await browser.close();
 }
