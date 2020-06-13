@@ -1,3 +1,5 @@
 node_modules/
 screenshots/
+test-files/covid-tracker.js
+test-files/index.js
 .env
