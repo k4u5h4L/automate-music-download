@@ -1,10 +1,14 @@
 // jshint esversion:8
 
-const puppeteer = require("puppeteer");
+// const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-extra");
 const inputValidate = require(__dirname + "/inputFilter");
 // const getSongs = require(__dirname + "/getSongs");
 const cheerio = require("cheerio");
 const fs = require("fs");
+const AdblockerPlugin = require("puppeteer-extra-plugin-adblocker");
+
+puppeteer.use(AdblockerPlugin());
 
 let songs = [];
 

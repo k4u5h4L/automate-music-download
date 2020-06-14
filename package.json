@@ -11,8 +11,11 @@
     "author": "Kaushal",
     "license": "ISC",
     "dependencies": {
+        "@cliqz/adblocker-puppeteer": "^1.16.0",
         "cheerio": "^1.0.0-rc.3",
-        "puppeteer": "^3.1.0"
+        "puppeteer": "^3.1.0",
+        "puppeteer-extra": "^3.1.9",
+        "puppeteer-extra-plugin-adblocker": "^2.11.3"
     },
     "devDependencies": {
         "nodemon": "^2.0.4"

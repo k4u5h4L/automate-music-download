@@ -29,9 +29,11 @@ npm run start
 
 This will start chromium and navigate to sites.
 
-### Note:
+## New features:
 
--   Desired extension loading with the browser is being worked upon.
+-   The browser will now block ads! The script has been included with an adblock extension by default.
+
+### Note:
 
 -   On a related note, I do not own the website this script is using, neither do I get anything from the site owner for using it.<br>
     So please use it at your own risk.
