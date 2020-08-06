@@ -7,7 +7,7 @@ This node.js script uses headless chrome browser to navigate sites and stimulate
 -   Clone and cd into the directory
 
 ```
-git clone https://github.com/theParanoidScripts/automate-music-download.git && cd automate-music-download
+git clone https://github.com/k4u5h4L/automate-music-download.git && cd automate-music-download
 ```
 
 -   Install dependencies like cheerio and the browser itself.<br>
